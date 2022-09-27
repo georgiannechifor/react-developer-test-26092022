@@ -13,9 +13,9 @@ import {
   TableSortLabel,
 } from "@material-ui/core";
 import { usePromiseTracker } from 'react-promise-tracker';
+import orderBy from "lodash/orderBy";
 import { columns, ERROR_MESSAGE } from "../constants";
 import { formatTimestamp } from "../lib/dateFormat";
-import orderBy from "lodash/orderBy";
 import LoadingButton from "./LoadingButton";
 
 const CustomTable = ({ data, error, onLoadMore }) => {

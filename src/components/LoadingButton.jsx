@@ -1,17 +1,21 @@
 import React from 'react';
-import { usePromiseTracker } from 'react-promise-tracker';
 import { Button, CircularProgress } from "@material-ui/core";
 
 const LoadingButton = ({
-  onClick
+  onClick,
+  isLoading
 }) => {
-  const { promiseInProgress: isLoading } = usePromiseTracker()
 
   if (isLoading) {
-    return <CircularProgress color="primary" size={30} />;
+    return <CircularProgress data-testid="loader" color="primary" size={30} />;
   }
   return (
-    <Button onClick={onClick} color="primary" variant="contained">
+    <Button
+      data-testid="load-more"
+      onClick={onClick}
+      color="primary"
+      variant="contained"
+    >
       Load more
     </Button>
   );

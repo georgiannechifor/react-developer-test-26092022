@@ -12,15 +12,16 @@ import {
   Typography,
   TableSortLabel,
 } from "@material-ui/core";
-
+import { usePromiseTracker } from 'react-promise-tracker';
 import { columns, ERROR_MESSAGE } from "../constants";
 import { formatTimestamp } from "../lib/dateFormat";
 import orderBy from "lodash/orderBy";
 import LoadingButton from "./LoadingButton";
 
-const CustomTable = ({ data, isLoading, error, onLoadMore }) => {
+const CustomTable = ({ data, error, onLoadMore }) => {
   const [order, setOrder] = useState("desc");
   const [sorted, setSorted] = useState([]);
+  const { promiseInProgress: isLoading } = usePromiseTracker()
 
   useEffect(() => {
     if (data) {
@@ -33,7 +34,7 @@ const CustomTable = ({ data, isLoading, error, onLoadMore }) => {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer data-testid="app-table" component={Paper}>
       <Table>
         <TableHead>
           {columns.map((column) =>

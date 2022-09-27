@@ -1,0 +1,1 @@
+export const ERROR_MESSAGE = 'We had some problems fetching your data. Please try again.'

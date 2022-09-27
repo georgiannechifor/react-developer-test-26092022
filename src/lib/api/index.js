@@ -1,10 +1,11 @@
 import { usersDiff, projectsDiff } from './data';
+import { trackPromise } from 'react-promise-tracker';
 
 const DEFAULT_DELAY = 2000;
 const PAGE_SIZE = 3;
 
 const resolveOrRejectCollection = (timesCalled, collection) => () => {
-  return new Promise((resolve, reject) => {
+  return trackPromise(new Promise((resolve, reject) => {
     const id = setTimeout(() => {
       timesCalled += 1;
       const sliceStart = PAGE_SIZE * (Math.ceil(timesCalled / 2) - 1);
@@ -28,8 +29,8 @@ const resolveOrRejectCollection = (timesCalled, collection) => () => {
         offset: hasItems ? sliceStart : totalItems,
         total: totalItems,
       });
-    }, DEFAULT_DELAY)
-  });
+    }, DEFAULT_DELAY);
+  }));
 };
 
 const getProjectsDiff = () => {

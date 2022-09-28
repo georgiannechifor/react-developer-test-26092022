@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect } from "react";
-import { array, func, bool, object } from "prop-types";
 import {
   Table,
   TableFooter,
@@ -34,7 +33,6 @@ const CustomTable: FC<TableProps> = ({
 
   useEffect(() => {
     if (data) {
-      // @ts-ignore
       setSorted(orderBy(data, "timestamp", order));
     }
   }, [data, order, setSorted]);
@@ -53,7 +51,8 @@ const CustomTable: FC<TableProps> = ({
     >
       <Table>
         <TableHead>
-          {columns.map((column) =>
+          {
+            columns.map((column) =>
             column.sortable ? (
               <TableCell
                 style={{ fontWeight: "bold" }}
@@ -69,11 +68,13 @@ const CustomTable: FC<TableProps> = ({
                 </TableSortLabel>
               </TableCell>
             ) : (
-              <TableCell style={{ fontWeight: "bold" }} key={column.key}>
+                <TableCell
+                  style={{ fontWeight: "bold" }}
+                  key={column.key}>
                 {column.label}
               </TableCell>
-            )
-          )}
+            ))
+          }
         </TableHead>
         <TableBody>
           {sorted.map((user: TableData) => (

@@ -3,6 +3,12 @@ export interface ApiTableProps {
   fetchingArea: string
 }
 
+export interface UserDiffType {
+  field: string,
+  oldValue: string,
+  newValue: string
+}
+
 export interface TableData {
   id: string,
   timestamp: number,
@@ -14,10 +20,4 @@ export interface TableProps {
   error: string,
   onLoadMore: () => void,
   fetchingArea: string
-}
-
-export interface UserDiffType {
-  field: string,
-  oldValue: string,
-  newValue: string
 }

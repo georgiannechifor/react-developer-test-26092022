@@ -9,7 +9,10 @@ const LoadingButton: FC<ButtonProps> = ({
 }) => {
 
   if (isLoading) {
-    return <CircularProgress data-testid="loader" color="primary" size={30} />;
+    return <CircularProgress
+      data-testid="loader"
+      color="primary"
+      size={30} />;
   }
   return (
     <Button

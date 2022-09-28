@@ -4,7 +4,7 @@ import { trackPromise } from 'react-promise-tracker';
 const DEFAULT_DELAY = 2000;
 const PAGE_SIZE = 3;
 
-const resolveOrRejectCollection = (timesCalled, collection) => () => {
+const resolveOrRejectCollection = (timesCalled, collection, area) => () => {
   return trackPromise(new Promise((resolve, reject) => {
     const id = setTimeout(() => {
       timesCalled += 1;
@@ -30,19 +30,19 @@ const resolveOrRejectCollection = (timesCalled, collection) => () => {
         total: totalItems,
       });
     }, DEFAULT_DELAY);
-  }));
+  }), area);
 };
 
 const getProjectsDiff = () => {
   let timesCalled = 0;
 
-  return resolveOrRejectCollection(timesCalled, projectsDiff);
+  return resolveOrRejectCollection(timesCalled, projectsDiff, 'projects');
 };
 
 const getUsersDiff = () => {
   let timesCalled = 0;
 
-  return resolveOrRejectCollection(timesCalled, usersDiff);
+  return resolveOrRejectCollection(timesCalled, usersDiff, 'users');
 };
 
 export default {

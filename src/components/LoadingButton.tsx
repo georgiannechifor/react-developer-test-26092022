@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, CircularProgress } from "@material-ui/core";
+import { ButtonProps } from '../types/button';
 
-const LoadingButton = ({
+const LoadingButton: FC<ButtonProps> = ({
   onClick,
-  isLoading
+  isLoading,
+  buttonLabel
 }) => {
 
   if (isLoading) {
@@ -16,7 +18,7 @@ const LoadingButton = ({
       color="primary"
       variant="contained"
     >
-      Load more
+      {buttonLabel || "Load more"}
     </Button>
   );
 };

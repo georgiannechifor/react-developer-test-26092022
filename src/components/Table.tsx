@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { array, func, bool, object } from "prop-types";
 import {
   Table,
@@ -11,20 +11,30 @@ import {
   Paper,
   Typography,
   TableSortLabel,
+  SortDirection,
 } from "@material-ui/core";
 import { usePromiseTracker } from 'react-promise-tracker';
 import orderBy from "lodash/orderBy";
 import { columns, ERROR_MESSAGE } from "../constants";
 import { formatTimestamp } from "../lib/dateFormat";
 import LoadingButton from "./LoadingButton";
+import { TableData, TableProps } from "../types/table";
 
-const CustomTable = ({ data, error, onLoadMore }) => {
-  const [order, setOrder] = useState("desc");
-  const [sorted, setSorted] = useState([]);
-  const { promiseInProgress: isLoading } = usePromiseTracker()
+const CustomTable: FC<TableProps> = ({
+  data,
+  error,
+  onLoadMore,
+  fetchingArea
+}) => {
+  const [order, setOrder] = useState<SortDirection>("desc");
+  const [sorted, setSorted] = useState<TableData[]>([] as TableData[]);
+  const { promiseInProgress: isLoading } = usePromiseTracker({
+    area: fetchingArea
+  })
 
   useEffect(() => {
     if (data) {
+      // @ts-ignore
       setSorted(orderBy(data, "timestamp", order));
     }
   }, [data, order, setSorted]);
@@ -34,7 +44,13 @@ const CustomTable = ({ data, error, onLoadMore }) => {
   };
 
   return (
-    <TableContainer data-testid="app-table" component={Paper}>
+    <TableContainer
+      data-testid="app-table"
+      component={Paper}
+      style={{
+        marginBottom: 50
+      }}
+    >
       <Table>
         <TableHead>
           {columns.map((column) =>
@@ -44,7 +60,11 @@ const CustomTable = ({ data, error, onLoadMore }) => {
                 key={column.key}
                 sortDirection={order}
               >
-                <TableSortLabel direction={order} onClick={handleSort}>
+                <TableSortLabel
+                  // @ts-ignore
+                  direction={order}
+                  onClick={handleSort}
+                >
                   {column.label}
                 </TableSortLabel>
               </TableCell>
@@ -56,9 +76,9 @@ const CustomTable = ({ data, error, onLoadMore }) => {
           )}
         </TableHead>
         <TableBody>
-          {sorted.map((user) => (
+          {sorted.map((user: TableData) => (
             <TableRow key={user.id}>
-              <TableCell width={90}>{formatTimestamp(user.timestamp)}</TableCell>
+              <TableCell>{formatTimestamp(user.timestamp)}</TableCell>
               <TableCell>{user.id}</TableCell>
               {/* accessed array values like that because if I'd use user.diff.map(..) the items
                 would need a key and our data doesn't contain any distinct field for that*/}
@@ -85,7 +105,11 @@ const CustomTable = ({ data, error, onLoadMore }) => {
                   </Typography>
                   ) : null
                 }
-                <LoadingButton isLoading={isLoading} onClick={onLoadMore} />
+                <LoadingButton
+                  isLoading={isLoading}
+                  onClick={onLoadMore}
+                  buttonLabel={error ? 'Retry' : 'Load More'}
+                />
               </>
             </TableCell>
           </TableRow>
@@ -93,20 +117,6 @@ const CustomTable = ({ data, error, onLoadMore }) => {
       </Table>
     </TableContainer>
   );
-};
-
-CustomTable.propTypes = {
-  data: array,
-  onLoadMore: func,
-  error: object,
-  isLoading: bool,
-};
-
-CustomTable.defaultProps = {
-  data: [],
-  error: null,
-  isLoading: false,
-  onLoadMore: () => null,
 };
 
 CustomTable.displayName = "CustomTable";

@@ -54,10 +54,13 @@ const CustomTable: FC<TableProps> = ({
           {
             columns.map((column) =>
             column.sortable ? (
-              <TableCell
-                style={{ fontWeight: "bold" }}
-                key={column.key}
-                sortDirection={order}
+                <TableCell
+                  style={{
+                    fontWeight: "bold",
+                    width: 90
+                  }}
+                  key={column.key}
+                  sortDirection={order}
               >
                 <TableSortLabel
                   // @ts-ignore
